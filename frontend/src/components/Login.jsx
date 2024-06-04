@@ -19,7 +19,7 @@ const Login = () => {
                 <div className="sm:mx-auto sm:w-full sm:max-w-40">
                     <img className="mx-auto h-4.5 w-auto" src={bank} alt="Your Company"/>
                     <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 md:text-2xl dark:text-black">
-                        Sign Up
+                        Login
                     </h2>
                 </div>
 
