@@ -13,7 +13,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/api/users/register', { name, email, password, role });
+            const res = await axios.post('https://bankapp-1-byfe.onrender.com/api/users/register', { name, email, password, role });
             localStorage.setItem('token', res.data.token);
             login(email, password);
         } catch (err) {

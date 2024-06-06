@@ -15,7 +15,7 @@ const Transfer = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('http://localhost:5000/api/transactions/transfer', { from: user._id, to, amount }, {
+            await axios.post('https://bankapp-1-byfe.onrender.com/api/transactions/transfer', { from: user._id, to, amount }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             alert('Transfer successful');

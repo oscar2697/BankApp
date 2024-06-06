@@ -9,7 +9,7 @@ const Loan = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('http://localhost:5000/api/transactions/loan', { to, amount }, {
+            await axios.post('https://bankapp-1-byfe.onrender.com/api/transactions/loan', { to, amount }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             alert('Loan successful');

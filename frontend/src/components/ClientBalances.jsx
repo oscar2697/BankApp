@@ -8,7 +8,7 @@ const ClientBalances = () => {
         const fetchClients = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('http://localhost:5000/api/users/clients', {
+                const res = await axios.get('https://bankapp-1-byfe.onrender.com/api/users/clients', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setClients(res.data);
