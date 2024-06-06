@@ -9,7 +9,7 @@ const Deposit = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('https://bank-app-back.vercel.app/api/transactions/deposit', { to, amount }, {
+            await axios.post('https://bankapp-b5kg.onrender.com/api/transactions/deposit', { to, amount }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             alert('Deposit successful');

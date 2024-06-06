@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.get('https://bank-app-back.vercel.app/api/users/me', {
+            axios.get('https://bankapp-b5kg.onrender.com/api/users/me', {
                 headers: { Authorization: `Bearer ${token}` },
             })
                 .then(res => setUser(res.data))
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const res = await axios.post('https://bank-app-back.vercel.app/api/users/login', { email, password });
+            const res = await axios.post('https://bankapp-b5kg.onrender.com/api/users/login', { email, password });
             localStorage.setItem('token', res.data.token);
             setUser(res.data.user);
             if (res.data.user.role === 'cashier') {

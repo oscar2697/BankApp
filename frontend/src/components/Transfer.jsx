@@ -15,7 +15,7 @@ const Transfer = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('https://bank-app-back.vercel.app/api/transactions/transfer', { from: user._id, to, amount }, {
+            await axios.post('https://bankapp-b5kg.onrender.com/api/transactions/transfer', { from: user._id, to, amount }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             alert('Transfer successful');

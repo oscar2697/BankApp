@@ -8,7 +8,7 @@ const ClientBalances = () => {
         const fetchClients = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('https://bank-app-back.vercel.app/api/users/clients', {
+                const res = await axios.get('https://bankapp-b5kg.onrender.com/api/users/clients', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setClients(res.data);
