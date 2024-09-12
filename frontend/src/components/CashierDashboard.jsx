@@ -19,7 +19,7 @@ const CashierDashboard = () => {
                 </h1>
 
                 <p className="mt-4 text-center leading-9 tracking-tight text-gray-900 md:text-1xl dark:text-black uppercase">
-                    Hola {user.name}
+                    Hola <span className='font-bold'>{user.name}</span> 
                 </p>
             </div>
 
