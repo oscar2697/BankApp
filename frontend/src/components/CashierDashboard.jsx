@@ -1,6 +1,6 @@
 import Deposit from './Deposit';
 import Loan from './Loan';
-import bank from '../assets/bank.png';
+import bank from '../assets/bank.jpg';
 import ClientBalances from './ClientBalances';
 import { IoIosLogOut } from 'react-icons/io';
 import { AuthContext } from '../context/AuthContext';

@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-import bank  from '../assets/bank.png'
+import bank  from '../assets/bank.jpg'
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -22,7 +22,7 @@ const Register = () => {
     };
 
     return (
-        <section className='flex min-h-full flex-col justify-center bg-gray-50 px-10 py-0 lg:px-8'>
+        <section className='flex min-h-full flex-col justify-center px-10 py-0 lg:px-8'>
             <div className='w-full h-screen xl:p-0 '>
                 <div className="sm:mx-auto sm:w-full sm:max-w-40">
                     <img className="mx-auto h-4.5 w-auto" src={bank} alt="Your Company"/>

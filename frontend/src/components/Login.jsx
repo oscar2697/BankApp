@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import bank  from '../assets/bank.png'
+import bank  from '../assets/bank.jpg'
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -14,8 +14,8 @@ const Login = () => {
     };
 
     return (
-        <section className='flex min-h-full flex-col justify-center bg-gray-50 px-11 py-0 lg:px-8'>
-            <div className='w-full h-screen xl:p-0 '>
+        <section className='flex min-h-full flex-col justify-center px-10 py-0 lg:px-8'>
+            <div className='w-full h-screen xl:p-0'>
                 <div className="sm:mx-auto sm:w-full sm:max-w-40">
                     <img className="mx-auto h-4.5 w-auto" src={bank} alt="Your Company"/>
                     <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 md:text-2xl dark:text-black">
@@ -23,7 +23,7 @@ const Login = () => {
                     </h2>
                 </div>
 
-                <form className='space-y-6 md:space-y-6 max-w-sm mx-auto w-full' onSubmit={handleSubmit}>
+                <form className='space-y-12 md:space-y-6 max-w-sm mx-auto w-full' onSubmit={handleSubmit}>
                     <label className='block text-sm font-medium leading-6 text-gray-500'>
                             Correo
                     </label>

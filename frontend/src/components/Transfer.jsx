@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import bank  from '../assets/bank.png'
+import bank  from '../assets/bank.jpg'
 import { FaHome } from "react-icons/fa";
 
 const Transfer = () => {
