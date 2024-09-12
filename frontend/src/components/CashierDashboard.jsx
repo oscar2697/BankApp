@@ -12,9 +12,9 @@ const CashierDashboard = () => {
     return (
         <div className="min-h-screen flex flex-col items-center">
             <div className="sm:mx-auto sm:w-full sm:max-w-40 my-4">
-                <img className="mx-auto h-24 w-auto" src={bank} alt="Your Company" />
+                <img className="mx-auto h-25 w-auto" src={bank} alt="Your Company" />
                 <h1 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 uppercase">
-                    Dashboard Cajero
+                    Dashboard Del Cajero
                 </h1>
 
                 <p className="mt-4 text-center leading-9 tracking-tight text-gray-900 md:text-1xl dark:text-black uppercase">
