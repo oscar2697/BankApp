@@ -46,7 +46,7 @@ exports.transferMoney = async (req, res) => {
 exports.getTransactionHistory = async (req, res) => {
     try {
         if (req.user.role !== 'admin') {
-            return res.status(403).json({ msg: 'Acces0 Denegado' });
+            return res.status(403).json({ msg: 'Acceso Denegado' });
         }
 
         const transactions = await Transaction.find().populate('from to', 'username');

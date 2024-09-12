@@ -5,6 +5,7 @@ import ClientBalances from './ClientBalances';
 import { IoIosLogOut } from 'react-icons/io';
 import { AuthContext } from '../context/AuthContext';
 import { useContext } from 'react';
+import Interest from './Interest';
 
 const CashierDashboard = () => {
     const { user, logout } = useContext(AuthContext);
@@ -24,6 +25,7 @@ const CashierDashboard = () => {
 
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full max-w-6xl px-4">
                 <Deposit />
+                <Interest/>
                 <Loan />
             </div>
 
