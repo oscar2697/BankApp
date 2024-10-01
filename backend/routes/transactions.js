@@ -9,29 +9,45 @@ router.use(authMiddleware);
 
 // Transferir dinero
 router.post('/transfer', async (req, res) => {
-    console.log('holi')
     const { from, to, amount } = req.body;
-    
-    const sender = await User.findById(from);
-    
-    const receiver = await User.findById(to);
-    const numericAmount = new BigNumber(amount); // Usa BigNumber para manejar decimales
 
-    if (numericAmount.isNaN()) return res.status(400).json({ message: 'Monto no válido' });
-    const senderBalance = new BigNumber(sender.balance); // Convierte el balance del remitente a BigNumber
-    const receiverBalance = new BigNumber(receiver.balance); // Convierte el balance del receptor a BigNumber
-    
-    if (senderBalance.isLessThan(numericAmount)) return res.status(400).json({ message: 'Fondos Insuficientes' });
+    try {
+        const sender = await User.findById(from);
+        const receiver = await User.findById(to);
+        
+        if (!sender || !receiver) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
 
-    sender.balance = senderBalance.minus(numericAmount).toFixed(2); // Restar el monto al remitente
-    receiver.balance = receiverBalance.plus(numericAmount).toFixed(2); // Sumar el monto al receptor
+        // Asegúrate de que amount es un número válido
+        const numericAmount = new BigNumber(amount);
+        if (numericAmount.isNaN()) return res.status(400).json({ message: 'Monto no válido' });
+        
+        // Asegúrate de que los balances sean numéricos y no undefined o null
+        const senderBalance = new BigNumber(sender.balance || 0); 
+        const receiverBalance = new BigNumber(receiver.balance || 0);
 
-    const transaction = new Transaction({ from, to, amount: numericAmount });
-    await transaction.save();
-    await sender.save();
-    await receiver.save();
-    console.log('hay error por aqui ', transaction)
-    res.status(201).json(transaction);
+        // Verifica que el remitente tenga suficientes fondos
+        if (sender.balance < amount) {
+            return res.status(400).json({ message: 'Fondos insuficientes' });
+        }
+
+        // Actualiza los balances
+        sender.balance = senderBalance.minus(numericAmount).toFixed(2);
+        receiver.balance = receiverBalance.plus(numericAmount).toFixed(2);
+
+        // Guarda la transacción
+        const transaction = new Transaction({ from, to, amount: numericAmount.toFixed(2) });
+        await transaction.save();
+        
+        await sender.save();
+        await receiver.save();
+
+        res.status(201).json({ message: 'Transferencia realizada' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Error en el servidor' });
+    }
 });
 
 // Realizar depósito
