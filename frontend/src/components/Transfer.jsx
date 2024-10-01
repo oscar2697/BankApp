@@ -1,71 +1,116 @@
-import { useEffect, useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import bank  from '../assets/bank.jpg'
 import { FaHome } from "react-icons/fa";
 
-const History = () => {
-    const [transactions, setTransactions] = useState([]);
+const Transfer = () => {
+    const [to, setTo] = useState('');
+    const [amount, setAmount] = useState('');
     const [error, setError] = useState('');
+
     const { user } = useContext(AuthContext);
 
-    useEffect(() => {
-        const fetchTransactions = async () => {
-            const token = localStorage.getItem('token');
-            try {
-                const response = await axios.get('https://bankapp-b5kg.onrender.com/api/history', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setTransactions(response.data);
-            } catch (err) {
-                setError(err.response?.data?.message || 'Error al recuperar el historial de transacciones');
-            }
-        };
-
-        if (user) {
-            fetchTransactions();
+    const handleTransfer = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        try {
+            await axios.post('https://bankapp-b5kg.onrender.com/api/transactions/transfer', { from: user._id, to, amount }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            alert('Transfer successful');
+        } catch (err) {
+            setError(err.response.data.message || 'Transfer failed');
         }
-    }, [user]);
+
+        //Reinicio del formulario
+        setTo('')
+        setAmount('')
+    };
 
     if (!user) return <div>Loading...</div>;
 
     return (
         <section className='flex min-h-full flex-col justify-center px-11 py-10'>
             <div className="sm:mx-auto sm:w-full sm:max-w-40 ">
+                <img className="mx-auto h-4.5 w-auto" src={bank} alt="Your Company"/>
                 <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 md:text-2xl dark:text-black uppercase">
-                    Historial de Transacciones
+                    Transferencias
                 </h2>
             </div>
 
-            {error && <p>{error}</p>}
+            <form className='space-y-6 md:space-y-6 max-w-sm mx-auto w-full' onSubmit={handleTransfer}>
+                {error && <p>{error}</p>}
 
-            <ul className='mt-6 space-y-4'>
-                {transactions.length === 0 ? (
-                    <p>No hay transacciones disponibles.</p>
-                ) : (
-                    transactions.map((transaction) => (
-                        <li key={transaction._id} className="p-4 border border-gray-200 rounded-lg">
-                            <p><strong>De:</strong> {transaction.from.username}</p>
-                            <p><strong>A:</strong> {transaction.to.username}</p>
-                            <p><strong>Monto:</strong> ${transaction.amount}</p>
-                            <p><strong>Fecha:</strong> {new Date(transaction.date).toLocaleString()}</p>
-                        </li>
-                    ))
-                )}
-            </ul>
+                <label className='block text-sm font-medium leading-6 text-gray-500'>
+                    Desde: 
+                </label>
+                
+                <input 
+                    type="text" 
+                    value={user._id} 
+                    readOnly 
+                    placeholder="Desde: " 
+                    className="mb-4 w-full border-0 py-1.5 text-gray-900 shadow-sm  
+                            sm:text-sm sm:leading-6 h-14 pl-5 bg-slate-900/5 outline-none rounded-xl" 
+                />
 
-            <button 
-                className='flex mt-4 w-full justify-center rounded-md 
-                    bg-gray-500 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm 
-                    hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
-                    focus-visible:outline-gray-600'
-                onClick={() => window.location.href = '/dashboard'}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-                <FaHome style={{ marginRight: 8 }} />
-                Home
-            </button>
+                <label className='block text-sm font-medium leading-6 text-gray-500'>
+                    Benficiario:
+                </label>
+
+                <input 
+                    type="text" 
+                    value={to} 
+                    onChange={(e) => setTo(e.target.value)} 
+                    placeholder="ID del Beneficiario" 
+                    required 
+                    className="mb-4 w-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
+                            ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6 h-14 pl-5 bg-slate-900/5 outline-none rounded-xl" 
+                />
+
+                <label className='block text-sm font-medium leading-6 text-gray-500'>
+                    Monto: 
+                </label>
+
+                <input 
+                    type="number" 
+                    value={amount} 
+                    onChange={(e) => setAmount(e.target.value)} 
+                    placeholder="Monto" 
+                    required 
+                    className="mb-4 w-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
+                            ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6 h-14 pl-5 bg-slate-900/5 outline-none rounded-xl" 
+                />
+
+                <button 
+                    className='flex w-full justify-center rounded-md 
+                        bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm 
+                        hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+                        focus-visible:outline-indigo-600' 
+                        type="submit"
+                    >
+                        Transferencia
+                </button>
+
+                <button 
+                    className='flex mt-4 w-full justify-center rounded-md 
+                        bg-gray-500 px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm 
+                        hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
+                        focus-visible:outline-gray-600'
+                    onClick={() => window.location.href = '/dashboard'}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                    <FaHome style={{ marginRight: 8 }} />
+                    Home
+                </button>
+            </form>
+
         </section>
+        
     );
 };
 
-export default History;
+export default Transfer;

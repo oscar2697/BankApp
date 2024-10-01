@@ -9,8 +9,11 @@ router.use(authMiddleware);
 
 // Transferir dinero
 router.post('/transfer', async (req, res) => {
+    console.log('holi')
     const { from, to, amount } = req.body;
+    
     const sender = await User.findById(from);
+    
     const receiver = await User.findById(to);
     const numericAmount = new BigNumber(amount); // Usa BigNumber para manejar decimales
 
@@ -27,7 +30,7 @@ router.post('/transfer', async (req, res) => {
     await transaction.save();
     await sender.save();
     await receiver.save();
-
+    console.log('hay error por aqui ', transaction)
     res.status(201).json(transaction);
 });
 
