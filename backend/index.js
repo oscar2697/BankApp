@@ -9,10 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Conectar a MongoDB
-mongoose.connect('mongodb+srv://oscar97:asgeirr@cluster0.m3tfq3d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect('mongodb+srv://oscar97:asgeirr@cluster0.m3tfq3d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
 app.get('/', (req, res) => {
     res.send('Express App is running')
