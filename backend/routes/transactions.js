@@ -41,7 +41,17 @@ router.post('/deposit', async (req, res) => {
 
     const receiverBalance = new BigNumber(receiver.balance);
     receiver.balance = receiverBalance.plus(numericAmount).toFixed(2); // Actualiza el balance con BigNumber
+    
+    // Guardar transacción en la base de datos
+    const transaction = new Transaction({
+        from: null, // Si es un depósito del cajero, no hay un 'from' explícito
+        to: receiver._id,
+        amount: numericAmount
+    });
+
     await receiver.save();
+    await transaction.save(); // Guardar la transacción
+    
     res.status(201).json({ message: 'Depósito hecho!' });
 });
 
@@ -55,8 +65,18 @@ router.post('/interest', async (req, res) => {
 
     const receiverBalance = new BigNumber(receiver.balance);
     receiver.balance = receiverBalance.plus(numericAmount).toFixed(2); // Actualiza el balance con BigNumber
+    
+    // Guardar transacción en la base de datos
+    const transaction = new Transaction({
+        from: null, // Si es una agregación de interés del cajero, no hay un 'from' explícito
+        to: receiver._id,
+        amount: numericAmount
+    });
+
     await receiver.save();
-    res.status(201).json({ message: 'Interés hecho!' });
+    await transaction.save(); // Guardar la transacción
+    
+    res.status(201).json({ message: 'Interés agregado!' });
 });
 
 // Realizar préstamo
@@ -69,7 +89,17 @@ router.post('/loan', async (req, res) => {
 
     const receiverBalance = new BigNumber(receiver.balance);
     receiver.balance = receiverBalance.plus(numericAmount).toFixed(2); // Actualiza el balance con BigNumber
+    
+    // Guardar transacción en la base de datos
+    const transaction = new Transaction({
+        from: null, // Si es un préstamo del cajero, no hay un 'from' explícito
+        to: receiver._id,
+        amount: numericAmount
+    });
+
     await receiver.save();
+    await transaction.save(); // Guardar la transacción
+    
     res.status(201).json({ message: 'Préstamo hecho!' });
 });
 
