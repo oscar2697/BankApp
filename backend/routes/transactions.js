@@ -76,8 +76,24 @@ router.post('/loan', async (req, res) => {
 //Historial
 router.get('/history', async (req, res) => {
     try {
-        const transactions = await Transaction.find({ from: req.user.id }).populate('to', 'name email');
-        res.json(transactions);
+        // Verificar si el usuario que solicita es un cliente
+        if (req.user.role === 'client') {
+            // Obtener las transacciones donde el 'to' es el usuario actual
+            const transactions = await Transaction.find({ to: req.user.id })
+                .populate('from', 'username') // Para obtener el nombre del banquero
+                .populate('to', 'username'); // Para obtener el nombre del cliente
+
+            res.json(transactions);
+        } else if (req.user.role === 'cashier') {
+            // Si es un banquero, obtener todas las transacciones que ha realizado
+            const transactions = await Transaction.find({ from: req.user.id })
+                .populate('from', 'username') // Para obtener el nombre del banquero
+                .populate('to', 'username'); // Para obtener el nombre del cliente
+
+            res.json(transactions);
+        } else {
+            return res.status(403).json({ msg: 'Acceso Denegado' });
+        }
     } catch (err) {
         res.status(500).json({ message: 'Error al recuperar el historial de transacciones', error: err.message });
     }
