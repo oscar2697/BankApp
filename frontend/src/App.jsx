@@ -6,11 +6,16 @@ import History from './components/History';
 import CashierDashboard from './components/CashierDashboard';
 import { AuthProvider } from './context/AuthContext';
 import Register from './components/Register';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <Router className="relative z-0 bg-primary">
       <AuthProvider>
+        <Toaster 
+          position="top-right"
+          reverseOrder={false}
+        />
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />

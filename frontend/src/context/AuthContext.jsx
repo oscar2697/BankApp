@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [auth, setAuth] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,37 +15,47 @@ export const AuthProvider = ({ children }) => {
             axios.get('https://bankapp-b5kg.onrender.com/api/users/me', {
                 headers: { Authorization: `Bearer ${token}` },
             })
-                .then(res => setUser(res.data))
+                .then(res => {
+                    setUser(res.data);
+                    setAuth(true);
+                })
                 .catch(err => {
                     console.error(err);
                     localStorage.removeItem('token');
+                    setAuth(false);
                 });
         }
     }, []);
 
     const login = async (email, password) => {
         try {
-            const res = await axios.post('https://bankapp-b5kg.onrender.com/api/users/login', { email, password });
-            localStorage.setItem('token', res.data.token);
-            setUser(res.data.user);
-            if (res.data.user.role === 'cashier') {
-                navigate('/cashier');
-            } else {
+            const response = await axios.post('https://bankapp-b5kg.onrender.com/api/users/login', {
+                email,
+                password
+            });
+            
+            if (response.data && response.data.token) {
+                setAuth(true);
+                setUser(response.data.user);
+                localStorage.setItem('token', response.data.token);
                 navigate('/dashboard');
+                return { success: true };
             }
         } catch (error) {
-            console.error("Login error:", error);
+            console.error('Error en login:', error);
+            return { error: true, message: error.response?.data?.message || 'Error al iniciar sesión' };
         }
     };
 
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
+        setAuth(false);
         navigate('/');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, auth, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -3,73 +3,107 @@ import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import History from './History';
 import { IoIosLogOut } from "react-icons/io";
+import { FaUser, FaIdCard, FaMoneyBillWave } from 'react-icons/fa';
 
 const Dashboard = () => {
     const { user, logout } = useContext(AuthContext);
 
-    if (!user) return <div>Loading...</div>;
+    if (!user) return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        </div>
+    );
 
     return (
-        <div className="flex h-screen">
-            <div className="w-1/4 p-6 border-r border-gray-200 dark:border-gray-800 bg-gray-800 dark:bg-gray-900 text-white flex flex-col justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold mb-6 uppercase text-gray-300">
-                        Bienvenido, {user.name}
-                    </h1>
-
-                    <div className="space-y-4">
-                        <h3>
-                            <strong className="text-gray-300">Role: </strong>
-                            {user.role}
-                        </h3>
-
-                        <h3>
-                            <strong className="text-gray-300">Id: </strong>
-                            {user._id}
-                        </h3>
-
-                        <p>
-                            <strong className="text-gray-300">Saldo: </strong>
-                            ${user.balance}
+        <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+            {/* Sidebar */}
+            <div className="w-full md:w-80 p-6 bg-white shadow-lg">
+                <div className="flex flex-col h-full">
+                    {/* Header */}
+                    <div className="mb-8">
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                            Bienvenido,
+                        </h1>
+                        <p className="text-lg text-indigo-600 font-semibold">
+                            {user.name}
                         </p>
                     </div>
 
-                    {user.role === 'client' && (
-                        <nav className="mt-8">
+                    {/* User Info */}
+                    <div className="space-y-6 bg-gray-50 p-4 rounded-xl">
+                        <div className="flex items-center space-x-3">
+                            <FaUser className="text-indigo-500 text-xl" />
+                            <div>
+                                <p className="text-sm text-gray-500">Role</p>
+                                <p className="font-medium text-gray-800">{user.role}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center space-x-3">
+                            <FaIdCard className="text-indigo-500 text-xl" />
+                            <div>
+                                <p className="text-sm text-gray-500">ID</p>
+                                <p className="font-medium text-gray-800">{user._id}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center space-x-3">
+                            <FaMoneyBillWave className="text-indigo-500 text-xl" />
+                            <div>
+                                <p className="text-sm text-gray-500">Saldo</p>
+                                <p className="font-medium text-gray-800">${user.balance}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <div className="mt-8 flex-grow">
+                        {user.role === 'client' && (
                             <Link
                                 to="/transfer"
-                                className="block py-2 px-4 rounded-full bg-indigo-500 text-white hover:bg-indigo-600 text-center mb-4"
+                                className="block w-full px-4 py-3 text-center bg-indigo-600 hover:bg-indigo-700 
+                                text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]
+                                shadow-md hover:shadow-lg"
                             >
-                                Realiza una Transferencia
+                                Realizar Transferencia
                             </Link>
-                        </nav>
-                    )}
+                        )}
 
-                    {user.role === 'cashier' && (
-                        <nav className="mt-8">
+                        {user.role === 'cashier' && (
                             <Link
                                 to="/cashier"
-                                className="block py-2 px-4 rounded-full bg-indigo-500 text-white hover:bg-indigo-600 text-center"
+                                className="block w-full px-4 py-3 text-center bg-indigo-600 hover:bg-indigo-700 
+                                text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]
+                                shadow-md hover:shadow-lg"
                             >
                                 Realizar Operaciones
                             </Link>
-                        </nav>
-                    )}
-                </div>
+                        )}
+                    </div>
 
-                <div className="mt-8 flex justify-center">
+                    {/* Logout Button */}
                     <button
                         onClick={logout}
-                        className="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600 flex items-center space-x-2"
+                        className="mt-auto flex items-center justify-center space-x-2 w-full px-4 py-3 
+                        bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-200 
+                        transform hover:scale-[1.02] shadow-md hover:shadow-lg"
                     >
-                        <IoIosLogOut />
-                        <span>Logout</span>
+                        <IoIosLogOut className="text-xl" />
+                        <span>Cerrar Sesión</span>
                     </button>
                 </div>
             </div>
-            
-            <div className="flex-grow p-6 bg-white overflow-y-auto">
-                <History />
+
+            {/* Main Content */}
+            <div className="flex-grow p-6">
+                <div className="bg-white rounded-xl shadow-lg p-6 max-w-5xl mx-auto">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                        Historial de Transacciones
+                    </h2>
+                    <div className="overflow-hidden">
+                        <History />
+                    </div>
+                </div>
             </div>
         </div>
     );
