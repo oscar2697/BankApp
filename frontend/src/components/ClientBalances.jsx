@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaUser, FaEnvelope, FaMoneyBillWave, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaMoneyBillWave, FaChevronLeft, FaChevronRight, FaSearch } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const ClientBalances = () => {
@@ -8,6 +8,7 @@ const ClientBalances = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [clientsPerPage] = useState(6); // Número de clientes por página
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchClients = async () => {
@@ -27,11 +28,16 @@ const ClientBalances = () => {
         fetchClients();
     }, []);
 
+    // Filtrar clientes basado en la búsqueda
+    const filteredClients = clients.filter(client =>
+        client.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     // Obtener clientes actuales
     const indexOfLastClient = currentPage * clientsPerPage;
     const indexOfFirstClient = indexOfLastClient - clientsPerPage;
-    const currentClients = clients.slice(indexOfFirstClient, indexOfLastClient);
-    const totalPages = Math.ceil(clients.length / clientsPerPage);
+    const currentClients = filteredClients.slice(indexOfFirstClient, indexOfLastClient);
+    const totalPages = Math.ceil(filteredClients.length / clientsPerPage);
 
     // Cambiar de página
     const paginate = (pageNumber) => {
@@ -39,6 +45,11 @@ const ClientBalances = () => {
             setCurrentPage(pageNumber);
         }
     };
+
+    // Reset página cuando se busca
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
 
     if (loading) {
         return (
@@ -50,8 +61,26 @@ const ClientBalances = () => {
 
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">Balance de Clientes</h1>
-            
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <h1 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
+                    Balance de Clientes
+                </h1>
+                
+                {/* Barra de búsqueda */}
+                <div className="relative">
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Buscar por nombre..."
+                        className="pl-10 pr-4 py-2 rounded-lg border border-gray-300 
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                        w-full md:w-64 transition-all duration-200"
+                    />
+                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {currentClients.map(client => (
                     <div 
@@ -91,8 +120,14 @@ const ClientBalances = () => {
                 ))}
             </div>
 
+            {filteredClients.length === 0 && (
+                <div className="text-center py-8">
+                    <p className="text-gray-500">No se encontraron clientes</p>
+                </div>
+            )}
+
             {/* Paginación */}
-            {clients.length > 0 && (
+            {filteredClients.length > 0 && (
                 <div className="flex justify-center items-center space-x-4 mt-8">
                     <button
                         onClick={() => paginate(currentPage - 1)}
@@ -133,12 +168,6 @@ const ClientBalances = () => {
                     >
                         <FaChevronRight />
                     </button>
-                </div>
-            )}
-
-            {clients.length === 0 && (
-                <div className="text-center py-8">
-                    <p className="text-gray-500">No hay clientes registrados</p>
                 </div>
             )}
         </div>
