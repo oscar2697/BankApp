@@ -31,7 +31,18 @@ const AccountMovements = ({ clientId, isAdmin }) => {
     }, [clientId, isAdmin]);
 
     if (loading) {
-        return <div className="animate-spin">Cargando...</div>;
+        return (
+            <div className="bg-white p-6 rounded-xl shadow-md">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <FaHistory className="text-indigo-600" />
+                    Movimientos de Cuenta
+                </h3>
+                <div className="flex justify-center items-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                    <span className="ml-2 text-gray-600">Cargando movimientos...</span>
+                </div>
+            </div>
+        );
     }
 
     return (
