@@ -34,7 +34,7 @@ const Register = () => {
         }
 
         try {
-            const res = await axios.post('https://bankapp-b5kg.onrender.com/api/users/register', {
+            const res = await axios.post('https://bankapp-f4r4.onrender.com/api/users/register', {
                 name,
                 email,
                 password,

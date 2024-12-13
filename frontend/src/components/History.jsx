@@ -13,7 +13,7 @@ const History = () => {
         const fetchHistory = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('https://bankapp-b5kg.onrender.com/api/transactions/history', {
+                const res = await axios.get('https://bankapp-f4r4.onrender.com/api/transactions/history', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setTransactions(Array.isArray(res.data) ? res.data : []);

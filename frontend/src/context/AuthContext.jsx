@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            axios.get('https://bankapp-b5kg.onrender.com/api/users/me', {
+            axios.get('https://bankapp-f4r4.onrender.com/api/users/me', {
                 headers: { Authorization: `Bearer ${token}` },
             })
                 .then(res => {
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     
     const login = async (email, password) => {
         try {
-            const response = await axios.post('https://bankapp-b5kg.onrender.com/api/users/login', {
+            const response = await axios.post('https://bankapp-f4r4.onrender.com/api/users/login', {
                 email,
                 password
             });

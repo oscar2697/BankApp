@@ -13,7 +13,7 @@ const Transfer = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('https://bankapp-b5kg.onrender.com/api/transactions/transfer', 
+            await axios.post('https://bankapp-f4r4.onrender.com/api/transactions/transfer', 
                 { from: user._id, to, amount }, 
                 { headers: { Authorization: `Bearer ${token}` }}
             );

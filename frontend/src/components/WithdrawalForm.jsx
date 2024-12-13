@@ -26,7 +26,7 @@ const WithdrawalForm = ({ clientId, currentBalance, onWithdrawal, onBalanceUpdat
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'http://localhost:5000/api/transactions/withdraw',
+                'https://bankapp-f4r4.onrender.com/api/transactions/withdraw',
                 {
                     clientId,
                     amount: Number(amount)

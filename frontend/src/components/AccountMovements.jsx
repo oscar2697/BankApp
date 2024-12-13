@@ -12,8 +12,8 @@ const AccountMovements = ({ clientId, isAdmin }) => {
             const token = localStorage.getItem('token');
             try {
                 const url = isAdmin 
-                    ? 'http://localhost:5000/api/transactions/all'
-                    : `http://localhost:5000/api/transactions/client/${clientId}`;
+                    ? 'https://bankapp-f4r4.onrender.com/api/transactions/all'
+                    : `https://bankapp-f4r4.onrender.com/api/transactions/client/${clientId}`;
                 
                 const response = await axios.get(url, {
                     headers: { Authorization: `Bearer ${token}` }

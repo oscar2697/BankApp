@@ -18,7 +18,7 @@ const ClientBalances = () => {
         const fetchClients = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('http://localhost:5000/api/users/clients', {
+                const res = await axios.get('https://bankapp-f4r4.onrender.com/api/users/clients', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setClients(res.data);
@@ -62,7 +62,7 @@ const ClientBalances = () => {
             
             try {
                 const response = await axios.delete(
-                    `http://localhost:5000/api/users/${clientId}`,
+                    `https://bankapp-f4r4.onrender.com/api/users/${clientId}`,
                     {
                         headers: { 
                             'Authorization': `Bearer ${token}`,

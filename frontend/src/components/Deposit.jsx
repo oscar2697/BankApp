@@ -11,7 +11,7 @@ const Deposit = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('https://bankapp-b5kg.onrender.com/api/transactions/deposit', 
+            await axios.post('https://bankapp-f4r4.onrender.com/api/transactions/deposit', 
                 { to, amount }, 
                 { headers: { Authorization: `Bearer ${token}` }}
             );
