@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import bank from '../assets/bank.jpg';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -13,22 +14,16 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await login(email, password);
-            if (response && response.error) {
-                toast.error('Credenciales incorrectas. Por favor, intenta de nuevo.');
-            } else {
-                const userRole = response.user.role;
+            const result = await login(email, password);
+            if (result && result.error) {
+                toast.error(result.message);
+            } else if (result && result.success) {
                 toast.success('¡Inicio de sesión exitoso!');
-                
-                if (userRole === 'cashier') {
-                    navigate('/cashier');
-                } else {
-                    navigate('/dashboard');
-                }
+                // La redirección ya se maneja en el AuthContext
             }
         } catch (error) {
             console.error('Error:', error);
-            toast.error('Error al iniciar sesión. Verifica tus credenciales.');
+            toast.error('Error al iniciar sesión');
         }
     };
 

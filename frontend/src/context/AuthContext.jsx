@@ -1,8 +1,16 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+    }
+    return context;
+};
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -26,7 +34,7 @@ export const AuthProvider = ({ children }) => {
                 });
         }
     }, []);
-
+    
     const login = async (email, password) => {
         try {
             const response = await axios.post('https://bankapp-b5kg.onrender.com/api/users/login', {
@@ -55,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, auth, login, logout }}>
+        <AuthContext.Provider value={{ user, auth, login, logout, useAuth }}>
             {children}
         </AuthContext.Provider>
     );

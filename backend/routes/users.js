@@ -3,6 +3,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/auth');
+const userController = require('../controllers/users');
 
 const router = express.Router();
 
@@ -56,5 +57,8 @@ router.get('/clients', async (req, res) => {
         res.status(500).json({ message: 'Error al recuparar los clientes', error: err.message });
     }
 });
+
+// Agregar la ruta para eliminar usuarios
+router.delete('/:id', authMiddleware, userController.deleteUser);
 
 module.exports = router;

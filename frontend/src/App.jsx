@@ -10,22 +10,31 @@ import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
-    <Router className="relative z-0 bg-primary">
-      <AuthProvider>
-        <Toaster 
-          position="top-right"
-          reverseOrder={false}
-        />
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/cashier" element={<CashierDashboard />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
+    <div className="relative z-0 bg-primary">
+      <Router>
+        <AuthProvider>
+          <Toaster 
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+            }}
+          />
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/transfer" element={<Transfer />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/cashier" element={<CashierDashboard />} />
+          </Routes>
+        </AuthProvider>
+      </Router>
+    </div>
   );
 }
 

@@ -148,4 +148,79 @@ router.get('/history', async (req, res) => {
     }
 });
 
+// Ruta para realizar retiros
+router.post('/withdraw', authMiddleware, async (req, res) => {
+    try {
+        const { clientId, amount } = req.body;
+        
+        // Verificar el cliente y su balance
+        const client = await User.findById(clientId);
+        if (!client) {
+            return res.status(404).json({ message: 'Cliente no encontrado' });
+        }
+
+        if (client.balance < amount) {
+            return res.status(400).json({ message: 'Saldo insuficiente' });
+        }
+
+        // Crear la transacción
+        const transaction = new Transaction({
+            clientId,
+            type: 'withdrawal',
+            amount,
+            date: new Date(),
+            clientName: client.name // Guardamos el nombre para referencia
+        });
+
+        // Actualizar el balance del cliente
+        client.balance -= amount;
+
+        // Guardar ambos cambios
+        await Promise.all([
+            transaction.save(),
+            client.save()
+        ]);
+
+        res.json({ 
+            message: 'Retiro exitoso',
+            newBalance: client.balance,
+            transaction
+        });
+    } catch (error) {
+        console.error('Error en retiro:', error);
+        res.status(500).json({ message: 'Error al procesar el retiro' });
+    }
+});
+
+// Obtener movimientos de un cliente específico
+router.get('/client/:clientId', authMiddleware, async (req, res) => {
+    try {
+        const transactions = await Transaction.find({ 
+            clientId: req.params.clientId 
+        }).sort({ date: -1 });
+        
+        res.json(transactions);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los movimientos' });
+    }
+});
+
+// Obtener todos los movimientos (solo para admin/cajero)
+router.get('/all', authMiddleware, async (req, res) => {
+    try {
+        // Verificar si es admin/cajero
+        if (req.user.role !== 'cashier') {
+            return res.status(403).json({ message: 'Acceso denegado' });
+        }
+
+        const transactions = await Transaction.find()
+            .sort({ date: -1 })
+            .limit(100); // Limitamos a los últimos 100 movimientos
+        
+        res.json(transactions);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los movimientos' });
+    }
+});
+
 module.exports = router;

@@ -37,11 +37,18 @@ exports.login = async (req, res) => {
         jwt.sign(payload, 'secret', { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             console.log('Login successful, token: ', token)
-            res.json({ token, role: user.role });
+            res.json({
+                token,
+                user: {
+                    _id: user._id,
+                    role: user.role,
+                    name: user.name,
+                    email: user.email
+                }
+            });
         });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+    } catch (error) {
+        res.status(500).json({ message: 'Error en el servidor' });
     }
 };
 
@@ -69,6 +76,37 @@ exports.getAllBalances = async (req, res) => {
         console.log('Clients: ', clients)
         const balances = clients.map(client => ({ username: client.username, balance: client.balance }));
         res.json(balances);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+
+// Delete user (Cashier)
+exports.deleteUser = async (req, res) => {
+    try {
+        // Verificar si el usuario que hace la petición es un cajero
+        if (req.user.role !== 'cashier') {
+            return res.status(403).json({ msg: 'Access denied. Only cashiers can delete users.' });
+        }
+
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+
+        // Verificar si el usuario existe
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Verificar que no se intente eliminar a otro cajero
+        if (user.role === 'cashier') {
+            return res.status(403).json({ msg: 'Cannot delete other cashiers' });
+        }
+
+        // Eliminar el usuario
+        await User.findByIdAndDelete(userId);
+        
+        res.json({ msg: 'User deleted successfully' });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
