@@ -42,7 +42,6 @@ const WithdrawalForm = ({ clientId, currentBalance, onWithdrawal, onBalanceUpdat
             toast.success('Retiro realizado con éxito');
             setAmount('');
         } catch (error) {
-            console.error('Error:', error);
             toast.error('Error al realizar el retiro');
         } finally {
             setLoading(false);

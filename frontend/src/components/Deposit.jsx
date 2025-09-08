@@ -19,7 +19,6 @@ const Deposit = () => {
             setTo('');
             setAmount('');
         } catch (err) {
-            console.error(err);
             toast.error('Error al realizar el depósito');
         }
     };

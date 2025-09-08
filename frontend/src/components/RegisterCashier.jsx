@@ -6,11 +6,11 @@ import bank  from '../assets/bank.jpg'
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-const Register = () => {
+const RegisterCashier = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('client');
+    const [role, setRole] = useState('cashier');
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -160,6 +160,7 @@ const Register = () => {
                         >
                             Tipo de Usuario
                         </label>
+
                         <select
                             id="role"
                             value={role}
@@ -168,8 +169,8 @@ const Register = () => {
                             focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200
                             bg-white text-gray-900"
                         >
-                            <option value="client">Cliente</option>
-                            {/*<option value="cashier">Cajero</option>*/}
+                            {/*<option value="client">Cliente</option>*/}
+                            <option value="cashier">Cajero</option>
                         </select>
                     </div>
 
@@ -201,4 +202,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default RegisterCashier;

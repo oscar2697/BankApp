@@ -19,10 +19,8 @@ const Login = () => {
                 toast.error(result.message);
             } else if (result && result.success) {
                 toast.success('¡Inicio de sesión exitoso!');
-                // La redirección ya se maneja en el AuthContext
             }
         } catch (error) {
-            console.error('Error:', error);
             toast.error('Error al iniciar sesión');
         }
     };

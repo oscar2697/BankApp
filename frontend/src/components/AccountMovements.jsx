@@ -21,7 +21,6 @@ const AccountMovements = ({ clientId, isAdmin }) => {
                 setMovements(response.data);
                 setLoading(false);
             } catch (error) {
-                console.error('Error:', error);
                 toast.error('Error al cargar los movimientos');
                 setLoading(false);
             }

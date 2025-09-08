@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }) => {
                     setAuth(true);
                 })
                 .catch(err => {
-                    console.error(err);
                     localStorage.removeItem('token');
                     setAuth(false);
                 });
@@ -50,7 +49,6 @@ export const AuthProvider = ({ children }) => {
                 return { success: true };
             }
         } catch (error) {
-            console.error('Error en login:', error);
             return { error: true, message: error.response?.data?.message || 'Error al iniciar sesión' };
         }
     };

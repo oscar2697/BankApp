@@ -19,7 +19,6 @@ const Loan = () => {
             setTo('');
             setAmount('');
         } catch (err) {
-            console.error(err);
             toast.error('Error al procesar el préstamo');
         }
     };

@@ -19,7 +19,6 @@ const Interest = () => {
             setTo('');
             setAmount('');
         } catch (err) {
-            console.error(err);
             toast.error('Error al aplicar el interés');
         }
     };

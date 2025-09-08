@@ -7,6 +7,7 @@ import CashierDashboard from './components/CashierDashboard';
 import { AuthProvider } from './context/AuthContext';
 import Register from './components/Register';
 import { Toaster } from 'react-hot-toast';
+import RegisterCashier from './components/RegisterCashier';
 
 function App() {
   return (
@@ -24,9 +25,11 @@ function App() {
               },
             }}
           />
+
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/register-cashier" element={<RegisterCashier />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/transfer" element={<Transfer />} />
             <Route path="/history" element={<History />} />

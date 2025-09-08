@@ -19,7 +19,6 @@ const History = () => {
                 setTransactions(Array.isArray(res.data) ? res.data : []);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching transaction history:', error);
                 toast.error('Error al cargar el historial de transacciones');
                 setTransactions([]);
                 setLoading(false);

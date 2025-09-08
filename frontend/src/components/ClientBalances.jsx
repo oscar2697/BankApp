@@ -10,7 +10,7 @@ const ClientBalances = () => {
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [clientsPerPage] = useState(6); // Número de clientes por página
+    const [clientsPerPage] = useState(6); 
     const [searchTerm, setSearchTerm] = useState('');
     const movementRefs = useRef({});
 
@@ -24,7 +24,6 @@ const ClientBalances = () => {
                 setClients(res.data);
                 setLoading(false);
             } catch (err) {
-                console.error(err);
                 toast.error('Error al cargar los clientes');
                 setLoading(false);
             }
@@ -58,7 +57,6 @@ const ClientBalances = () => {
     const handleDeleteClient = async (clientId) => {
         if (window.confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
             const token = localStorage.getItem('token');
-            console.log('Intentando eliminar cliente:', clientId);
             
             try {
                 const response = await axios.delete(
@@ -71,14 +69,11 @@ const ClientBalances = () => {
                     }
                 );
 
-                console.log('Respuesta del servidor:', response);
-
                 if (response.status === 200) {
                     setClients(prevClients => prevClients.filter(client => client._id !== clientId));
                     toast.success('Cliente eliminado exitosamente');
                 }
             } catch (err) {
-                console.error('Error completo:', err);
                 toast.error(err.response?.data?.message || 'Error al eliminar el cliente');
             }
         }
