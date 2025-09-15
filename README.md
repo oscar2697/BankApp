@@ -155,7 +155,7 @@ GET /api/users/balance
 GET /api/users/all (Admin only)
 
 ## Project Structure
-
+```javascript
 bankapp/
 ├── backend/
 │   ├── controllers/
@@ -170,7 +170,7 @@ bankapp/
         ├── context/
         ├── utils/
         └── App.jsx
-
+```
 ## Project Status
 
 Currently in production, handling real financial transactions with emphasis on security and reliability.
